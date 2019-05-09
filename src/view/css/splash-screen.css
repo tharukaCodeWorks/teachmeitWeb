@@ -1,0 +1,46 @@
+.green-back {
+	height: 100%;
+	width: 100%;
+	background-color: #00aa4a;
+	position: fixed;
+}
+
+.center-div {
+	position: relative;
+	text-align: center;
+	width: 100%;
+	height: 100%;
+}
+
+.center-div .logo-animate {
+	position: absolute;
+	margin: auto;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	animation: move 2s infinite ease-in-out;
+}
+
+@keyframes move {
+	0% {
+		transform: scale(1) rotate(0deg);
+	}
+	50% {
+		transform: scale(1.2) rotate(0.1deg);
+	}
+	100% {
+		transform: scale(1) rotate(0deg);
+	}
+}
+
+.splash-privacy {
+	width: 100%;
+	color: #ffffff;
+	position: absolute;
+	bottom: 10px;
+	text-align: center;
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+}

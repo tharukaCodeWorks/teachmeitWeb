@@ -1,0 +1,25 @@
+.course-bar-desktop {
+	background-color: #ffffff;
+	width: 250px;
+	padding: 10px;
+	height: 750px;
+	box-shadow: 2px 0px #e2e2e2;
+	display: inline-block;
+	position: fixed;
+	vertical-align: top;
+	height: calc(100% - 51px);
+	overflow: auto;
+}
+
+.course-bar-tablet {
+	background-color: #ffffff;
+	width: 200px;
+	padding: 10px;
+	height: 750px;
+	box-shadow: 2px 0px #e2e2e2;
+	display: inline-block;
+	vertical-align: top;
+	height: calc(100% - 51px);
+	overflow: auto;
+	position: fixed;
+}

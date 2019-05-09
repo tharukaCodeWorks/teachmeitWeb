@@ -1,0 +1,55 @@
+.footer-privacy-statement {
+	color: rgb(138, 138, 138) !important;
+}
+
+/* width */
+::-webkit-scrollbar {
+	width: 10px;
+	/* scroll-behavior: smooth !important; */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #00ca6f;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #007c38;
+	animation: shine;
+}
+
+@keyframes shine {
+	10% {
+		opacity: 1;
+		top: -30%;
+		left: -30%;
+		transition-property: left, top, opacity;
+		transition-duration: 0.7s, 0.7s, 0.15s;
+		transition-timing-function: ease;
+	}
+	100% {
+		opacity: 0;
+		top: -30%;
+		left: -30%;
+		transition-property: left, top, opacity;
+	}
+}
+
+body {
+	background-color: #e5eae6 !important;
+	margin: 0;
+	height: 100%;
+}
+
+html {
+	height: 100%;
+}
+#root {
+	height: 100%;
+}
