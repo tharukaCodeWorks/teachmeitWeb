@@ -25,9 +25,13 @@ const getWidth = () => {
  */
 
 class DesktopContainer extends Component {
-	state = {};
+	state = {
+		
+	};
 
-	handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+	handleItemClick = ( e, data ) => {
+		this.setState({ activeItem: data })
+	};
 
 	render() {
 		const { children, authenticated } = this.props;
@@ -35,26 +39,20 @@ class DesktopContainer extends Component {
 
 		return (
 			<Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
-				<Menu fixed="top" inverted secondary color="green" size="mini">
+				<Menu fixed="top" inverted secondary color="green" size="tiny">
 					<Container>
 						<Menu.Item verticalAlign>
 							<Image src="/logo_white_mini.png" />
 						</Menu.Item>
-						<Item name="home" active={activeItem === 'home'} onClick={this.handleItemClick}>
-							<Button as={Link} to="/downloads" size="small" color="green">
-								Home
-							</Button>
-						</Item>
-						<Item name="courses" active={activeItem === 'courses'} onClick={this.handleItemClick}>
-							<Button as={Link} to="/downloads" size="small" color="green">
+						<Menu.Item name="home" as={Link} to="/" active={activeItem === 'home'} onClick={((e) => this.handleItemClick(e, 'home'))}>
+								Home		
+						</Menu.Item>
+						<Menu.Item name="courses" as={Link} to="/cources" active={activeItem === 'courses'} onClick={((e) => this.handleItemClick(e, 'cources'))}>
 								Courses
-							</Button>
-						</Item>
-						<Item name="downloads" active={activeItem === 'downloads'} onClick={this.handleItemClick}>
-							<Button as={Link} to="/downloads" size="small" color="green">
+						</Menu.Item>
+						<Menu.Item as={Link} to="/downloads" name="downloads" active={activeItem === 'downloads'} onClick={((e) => this.handleItemClick(e, 'downloads'))}>						
 								Downloads
-							</Button>
-						</Item>
+						</Menu.Item>
 
 						{authenticated.isAuthenticated ? (
 							<Menu.Item position="right">
@@ -114,6 +112,17 @@ class MobileContainer extends Component {
 
 		return (
 			<Responsive as={Sidebar.Pushable} getWidth={getWidth} maxWidth={Responsive.onlyMobile.maxWidth}>
+				<Sidebar.Pusher dimmed={sidebarOpened}>
+					<Menu secondary color="green" fixed="top" inverted size="mini">
+						<Menu.Item>
+							<Image src="/logo_white_mini.png" />
+						</Menu.Item>
+						<Menu.Item position="right" onClick={this.handleToggle}>
+							<Icon size="large" inverted name="sidebar" />
+						</Menu.Item>
+					</Menu>
+					<div style={{ marginTop: '47px' }}>{children}</div>
+				</Sidebar.Pusher>
 				<Sidebar
 					as={Menu}
 					animation="push"
@@ -134,25 +143,11 @@ class MobileContainer extends Component {
 							{this.props.authenticated ? 'Logout' : 'Login'}
 							{console.log('Mobile: ' + this.props.authenticated)}
 						</Button>
-					</Menu.Item>
-					<Menu.Item style={{ marginLeft: '0em' }}>
 						<Button as={Link} to="/register" size="tiny" color="green">
 							Sign Up
 						</Button>
 					</Menu.Item>
 				</Sidebar>
-
-				<Sidebar.Pusher dimmed={sidebarOpened}>
-					<Menu secondary color="green" fixed="top" inverted size="mini">
-						<Menu.Item>
-							<Image src="/logo_white_mini.png" />
-						</Menu.Item>
-						<Menu.Item position="right" onClick={this.handleToggle}>
-							<Icon size="large" inverted name="sidebar" />
-						</Menu.Item>
-					</Menu>
-					<div style={{ marginTop: '47px' }}>{children}</div>
-				</Sidebar.Pusher>
 			</Responsive>
 		);
 	}
@@ -164,7 +159,7 @@ MobileContainer.propTypes = {
 };
 
 const ResponsiveContainer = ({ children, authenticated }) => (
-	<div>
+	<div style={{ height: '100%' }}>
 		<DesktopContainer authenticated={authenticated}>{children}</DesktopContainer>
 		<MobileContainer authenticated={authenticated}>{children}</MobileContainer>
 	</div>

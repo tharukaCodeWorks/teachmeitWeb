@@ -31,7 +31,7 @@ class RegisterComponent extends Component {
 				password: false,
 				c_password: false,
 				email: false,
-				agrement: true
+				agrement: false
 			},
 			isProcessing: false,
 			response: {
@@ -65,20 +65,22 @@ class RegisterComponent extends Component {
 
 	onSubmit() {
 		if (
-			!this.state.validation.agrement &&
 			!this.state.validation.first_name &&
 			!this.state.validation.last_name &&
 			!this.state.validation.email &&
 			!this.state.validation.password &&
 			!this.state.validation.c_password
 		) {
-			this.setState({ isProcessing: true });
-			this.props.registerUser({
-				name: this.state.form.first_name + ' ' + this.state.form.last_name,
-				email: this.state.form.email,
-				password: this.state.form.password,
-				c_password: this.state.form.c_password
-			});
+			if(this.state.validation.agrement){
+				this.setState({ isProcessing: true });
+				this.props.registerUser({
+					name: this.state.form.first_name + ' ' + this.state.form.last_name,
+					email: this.state.form.email,
+					password: this.state.form.password,
+					c_password: this.state.form.c_password
+				});
+			}
+			
 		}
 	}
 

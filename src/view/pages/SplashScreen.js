@@ -24,6 +24,7 @@ function withSplashScreen(WrappedComponent) {
 		}
 
 		async componentDidMount() {
+			document.title = 'Teachmeit';
 			try {
 				setTimeout(() => {
 					this.setState({

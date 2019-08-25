@@ -24,6 +24,8 @@ import { setAuthetication } from './redux/actions/authAction';
 import requireAuth from './util/auth/requireAuth';
 import noRequireAuth from './util/auth/noRequireAuth';
 import Signout from './util/auth/Signout';
+import Cources from './view/pages/cources/Cources';
+import NewPostList from './view/pages/cources/new/New.post.list';
 
 class App extends Component {
 	render() {
@@ -36,6 +38,8 @@ class App extends Component {
 				<Router>
 					<Route exact path="/" component={Home} />
 					<Route exact path="/logout" component={requireAuth(Signout)} />
+					<Route exact path="/cources" component={requireAuth(Cources)} />
+					<Route exact path="/course/new" component={requireAuth(NewPostList)} />
 					<Container>
 						<Route exact path="/register" component={noRequireAuth(Register)} />
 						<Route exact path="/login" component={noRequireAuth(Login)} />
