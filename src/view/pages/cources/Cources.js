@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { Grid, Image, Button, Item, Responsive, Card} from 'semantic-ui-react';
-import TextTruncate from 'react-text-truncate';
+import { Grid, Image, Icon, Menu, Responsive} from 'semantic-ui-react';
 // Includes
 import ResponsiveContainer from '../../includes/navbar';
 import Footer from '../../includes/footer';
-import NewPostList from './new/New.post.list';
-import { Link } from 'react-router-dom';
+import NewPostListLayout from './new/New.post.list';
+import { Link, Switch } from 'react-router-dom';
+import Route from 'react-router-dom/Route';
+import TopCourses from './top/top-courses';
+import MyCourses from './my-courses/my-courses';
+import Course from './course/Course';
+import CourseOffers from './offers/course-offers';
+import Wishlist from './wishlist/Wishlist';
 
 const paragraph = <Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
 
@@ -15,120 +20,90 @@ class BusinessContainer extends Component{
 }
 
 class DesktopContainer extends BusinessContainer{
-    state = {}
+    state = { activeItem: 'home' }
+    handleItemClick = (e, { name }) => this.setState({ activeItem: name })
     render (){
         const { activeItem } = this.state;
         return (
             <Responsive minWidth={Responsive.onlyTablet.minWidth}>
-                 <Grid celled>
+                 <Grid style={{ padding: 10 }}>
                     <Grid.Row>
-                        <Grid.Column width={3}>
-                            <h3>My Post Lists</h3>
-                            <Grid>
-                                <Grid.Column textAlign="center">
-                                    {/* <NewPostList/> */}
-                                    <Button as={Link} to="/course/new">New course</Button>
-                                </Grid.Column>
-                            </Grid>
-                            <Item.Group link>
+                        <Grid.Column width={3} style={{ padding: 10 }}>
+                        <Menu size='large' vertical>
 
-                                <Item>
-                                    <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/stevie.jpg' />
-                                    <Item.Content>
-                                        <Item.Header>Stevie Feliciano</Item.Header>
-                                        <Item.Description>{paragraph}</Item.Description>
-                                    </Item.Content>
-                                </Item>
+                                <Menu.Item
+                                    as={Link}
+                                    to="/cources"
+                                    name='course'
+                                    active={activeItem === 'course'}
+                                    onClick={this.handleItemClick}
+                                    >
+                                    <Icon name='grid layout' />
+                                    Cources
+                                </Menu.Item>
 
-                                <Item>
-                                    <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/stevie.jpg' />
-                                    <Item.Content>
-                                        <Item.Header>Stevie Feliciano</Item.Header>
-                                        <Item.Description>{paragraph}</Item.Description>
-                                    </Item.Content>
-                                </Item>
+                                <Menu.Item
+                                as={Link}
+                                to="/cources/top"
+                                name='top'
+                                active={activeItem === 'top'}
+                                onClick={this.handleItemClick}
+                                >
+                                <Icon name='gripfire' />
+                                Top Courses
+                                </Menu.Item>
 
-                                <Item>
-                                    <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/stevie.jpg' />
-                                    <Item.Content>
-                                        <Item.Header>Stevie Feliciano</Item.Header>
-                                        <Item.Description>{paragraph}</Item.Description>
-                                    </Item.Content>
-                                </Item>
-
-                                <Item>
-                                    <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/stevie.jpg' />
-                                    <Item.Content>
-                                        <Item.Header>Stevie Feliciano</Item.Header>
-                                        <Item.Description>{paragraph}</Item.Description>
-                                    </Item.Content>
-                                </Item>
-
-                                <Item>
-                                    <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/stevie.jpg' />
-                                    <Item.Content>
-                                        <Item.Header>Stevie Feliciano</Item.Header>
-                                        <Item.Description>{paragraph}</Item.Description>
-                                    </Item.Content>
-                                </Item>
-
-                                <Item>
-                                    <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/stevie.jpg' />
-                                    <Item.Content>
-                                        <Item.Header>Stevie Feliciano</Item.Header>
-                                        <Item.Description>{paragraph}</Item.Description>
-                                    </Item.Content>
-                                </Item>
-
-                                <Item>
-                                    <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/stevie.jpg' />
-                                    <Item.Content>
-                                        <Item.Header>Stevie Feliciano</Item.Header>
-                                        <Item.Description>{paragraph}</Item.Description>
-                                    </Item.Content>
-                                </Item>
-
-                                <Item>
-                                    <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/veronika.jpg' />
-                                    <Item.Content>
-                                        <Item.Header>Veronika Ossi</Item.Header>
-                                        <Item.Description>{paragraph}</Item.Description>
-                                    </Item.Content>
-                                </Item>
-
-                                <Item>
-                                    <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/jenny.jpg' />
-                                    <Item.Content>
-                                        <Item.Header>Jenny Hess</Item.Header>
-                                        <Item.Description>{paragraph}</Item.Description>
-                                    </Item.Content>
-                                </Item>
-                            </Item.Group>
+                                <Menu.Item
+                                    as={Link}
+                                    to='/cources/offers'
+                                    name='offer'
+                                    active={activeItem === 'offer'}
+                                    onClick={this.handleItemClick}
+                                >
+                                    <Icon name="tag" />
+                                    Offers
+                                </Menu.Item>
+                                <Menu.Item
+                                as={Link}
+                                to='/cources/wishlist'
+                                name='wishlist'
+                                active={activeItem === 'wishlist'}
+                                onClick={this.handleItemClick}
+                                >
+                                    <Icon name="clipboard list" />
+                                Whishlist
+                                </Menu.Item>
+                                <Menu.Item
+                                as={Link}
+                                to="/cources/my"
+                                name='myCourses'
+                                active={activeItem === 'myCourses'}
+                                onClick={this.handleItemClick}
+                                >
+                                    <Icon name="unordered list" />
+                                My Courses
+                                </Menu.Item>
+                                <Menu.Item
+                                as={Link}
+                                to='/cources/new'
+                                name='new'
+                                active={activeItem === 'new'}
+                                onClick={this.handleItemClick}
+                                >
+                                    <Icon name="sun" />
+                                Create New Course
+                                </Menu.Item>
+                            </Menu>
                         </Grid.Column>
                         <Grid.Column width={13}>
-                            <Grid columns={5}>
-                                <Grid.Row>
-                                    <Grid.Column style={{ padding: 10 }}>    
-                                        <Card>
-                                            <Image src='https://i.udemycdn.com/course/240x135/914296_3670_8.jpg' wrapped ui={false} />
-                                            <Card.Content>
-                                            <Card.Header>
-                                                <TextTruncate
-                                                    line={2}
-                                                    element="span"
-                                                    truncateText="…"
-                                                    text="Complete Python Bootcamp: Go from zero to hero in Python 3"
-                                                />
-                                            </Card.Header>
-                                            <Card.Meta>Jose Portilla</Card.Meta>
-                                                <Card.Description>
-                                                    Daniel is a comedian living in Nashville.
-                                                </Card.Description>
-                                            </Card.Content>
-                                        </Card>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
+                            <Switch>
+                                <Route path='/cources' exact component={Course} />
+                                <Route path='/cources/top' exact component={TopCourses} />
+                                <Route path='/cources/new' exact component={NewPostListLayout} />
+                                <Route path='/cources/my' exact component={MyCourses} />
+                                <Route path='/cources/offers' exact component={CourseOffers} />
+                                <Route path='/cources/wishlist' exact component={Wishlist} />
+                            </Switch>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

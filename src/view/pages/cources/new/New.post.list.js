@@ -1,124 +1,198 @@
-import React, { Component } from "react";
-import { Modal, Form, Input, Select, TextArea, Label, Button } from 'semantic-ui-react';
+import React, { Component} from "react";
+import { Radio, Form, Input, Select, Message, Header, Button, Responsive, Icon, Container } from 'semantic-ui-react';
 import ImageUploader from 'react-images-upload';
 import Axios from "axios";
+import { connect } from 'react-redux';
+import Footer from '../../../includes/footer';
+import ResponsiveContainer from '../../../includes/navbar';
+import BreadCrumb from "../../../components/BreadCrumb";
 
-class NewPostList extends Component{
 
+const createNewPostLIst = () => {
+    
+}  
+
+class DesktopContainer extends Component{
     state = {
-        categoryList: [],
         loading: false,
-        course_name: '',
-        course_price: '',
-        course_category_id: 0,
-        picture: []
+        categoryList: [],
+        course_published: false,
+        modalOpen: false,
+        infoMessage: false
     };
-
-    constructor(props){
-        super(props);
-        this.onDrop = this.onDrop.bind(this);
-    }
-
-    onDrop(picture) {
-        this.setState({
-            picture: picture,
-        });
-    }
-    handleChange = (e, { name, value }) => {
-        console.log(value);
-        console.log(name);
-        this.setState(
-            {
-                loading: true
-            }
-        );
-        this.state.loading = true;
-    };
-
-    render(){
-        return (
-            <Modal trigger={<Button positive>Create New Course</Button>}>
-                <Modal.Header>Create new Course</Modal.Header>
-                <Modal.Content>
-                    <Form loading={ this.state.loading }>
-                        <Form.Field
-                            control={Select}
-                            options={this.state.categoryList}
-                            label={{ children: 'Category', htmlFor: 'form-select-control-gender' }}
-                            placeholder='Category'
-                            search
-                            name='course_category_id'
-                            value={this.state.course_category_id}
-                            onChange={this.handleChange}
-                            searchInput={{ id: 'form-select-control-gender' }}
-                        />
-
-                        <Form.Field
-                            id='form-input-control-first-name'
-                            control={Input}
-                            label='Course Name'
-                            placeholder='Course Name'
-                            onChange={this.handleChange}
-                            name='course_name'
-                            value={this.state.course_name}
-                        />
-
-                        <Form.Field
-                            id='form-input-control-first-name'
-                            control={Input}
-                            label='Course Price'
-                            placeholder='Course Price'
-                            onChange={this.handleChange}
-                            name='course_price'
-                            value={this.state.course_price}
-                        />
-
-                        <ImageUploader
-                            withIcon={true}
-                            singleImage={true}
-                            withPreview={true}
-                            buttonText='Choose Course image'
-                            imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                            maxFileSize={5242880}
-                            name='course_image'
-                            onChange={this.onDrop}
-                        />
-                    
-                        <Form.Field
-                            id='form-button-control-public'
-                            control={Button}
-                            content='Create Course'
-                            style={{ backgroundColor: '#56BB47', color: '#ffffff' }}
-                        />
-                    </Form>
-                </Modal.Content>
-            </Modal>
-        );
-    }
 
     componentDidMount(){
-        this.getCategoryList();
-    }
-
-    getCategoryList(){
-        Axios.get('http://127.0.0.1:8000/api/categories')
+        Axios.get("http://127.0.0.1:8000/api/categories")
         .then((res)=>{
-            let itemList =[];
-            res.data.map((item, i) => {
-                itemList.push({key: item.id, value: item.id, text: item.category_name})
+            console.log(res);
+            let postLists = [];
+            res.data.map((item, key) =>{
+                postLists.push({
+                    key: key,
+                    value: item.id,
+                    text: item.category_name
+                });
             });
-            this.setState({ 
-                categoryList: {...itemList} 
-            });
+            this.setState({ categoryList: postLists });
         })
-        .catch((e)=>{
-
+        .catch((error)=>{
+            console.log(error);
         });
     }
 
-   createPostList(){
-        Axios.post()
-   }
+    insertNewCourse = () => {
+        this.setState({
+            loading: true
+        });
+        var bodyFormData = new FormData();
+        bodyFormData.append('course_image', this.state.image != null ?this.state.image[0]: []);
+        bodyFormData.append('course_name', this.state.course_name);
+        bodyFormData.append('course_category_id', this.state.course_category_id);
+        bodyFormData.append('course_price', this.state.course_price);
+        bodyFormData.append('course_published', this.state.course_published);
+
+        Axios.post('http://127.0.0.1:8000/api/post-list/insert', bodyFormData, {
+            headers:{
+              'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then(res =>{
+            this.setState({
+                loading: false,
+                infoMessage: true
+            });
+            this.handleOpen();
+        })
+        .catch(err=>{
+            this.setState({
+                loading: false
+            });
+            this.handleOpen();
+        });
+    }
+
+    imageSelected = (picture) => {
+        console.log(picture);
+        this.setState(
+            {
+                image: picture
+            }
+        );
+    }
+
+    handleChange = (e) => {
+        this.setState ({
+            [e.target.name]: e.target.value
+        });
+    }
+
+    handleDropdownChanged = (e, data) => {
+        this.setState({
+            course_category_id: data.value
+        });
+    }
+
+    checkChange = (e) => {
+        console.log(e);
+        this.setState(
+            {
+                course_published: this.state.course_published==0?1:0
+            }
+        );
+    }
+
+    handleOpen = () => this.setState({ modalOpen: true })
+
+    handleClose = () => this.setState({ modalOpen: false })
+    
+    render(){
+        return(
+            <Responsive minWidth={Responsive.onlyTablet.minWidth}>
+                {/* {BreadcrumbExample()} */}
+                <Container>
+                <BreadCrumb />
+                <Form loading={ this.state.loading }>
+                    {this.state.infoMessage? <Message positive>
+                        <Message.Header>Course inserted successfully!</Message.Header>
+                        <p>
+                        Make amazing course...
+                        </p>
+                    </Message>: null}
+                    <Form.Field
+                        control={Select}
+                        options={this.state.categoryList}
+                        label={{ children: 'Category', htmlFor: 'form-select-control-gender' }}
+                        placeholder='Category'
+                        search
+                        value={this.state.course_category_id}
+                        name='course_category_id'
+                        onChange={this.handleDropdownChanged}
+                        searchInput={{ id: 'form-select-control-gender' }}
+                    />
+
+                    <Form.Field
+                        id='form-input-control-first-name'
+                        control={Input}
+                        label='Course Name'
+                        placeholder='Course Name'
+                        onChange={this.handleChange}
+                        name='course_name'
+                        value={this.state.course_name}
+                    />
+
+                    <Form.Field
+                        id='form-input-control-first-name'
+                        control={Input}
+                        label='Course Price'
+                        placeholder='Course Price'
+                        onChange={this.handleChange}
+                        name='course_price'
+                        value={this.state.course_price}
+                    />
+
+                    <Form.Field>
+                        <Radio toggle label="Drafted/ Publish" onChange={this.checkChange} name="course_published" />
+                    </Form.Field>
+
+                    <ImageUploader
+                        withIcon={true}
+                        singleImage={true}
+                        withPreview={true}
+                        buttonText='Choose Course image'
+                        imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                        maxFileSize={5242880}
+                        name='course_image'
+                        onChange={this.imageSelected}
+                    />
+                
+                    <Button size="medium" color="green" onClick={this.insertNewCourse}>Create Course</Button>
+                </Form>
+                </Container>
+            </Responsive>
+        );
+    }
 }
 
-export default NewPostList;
+class MobileContainer extends Component{
+    render(){
+        return(
+            <div></div>
+        );
+    }
+}
+
+class NewPostListLayout extends Component{
+    componentDidMount() {
+		document.title = 'Teachmeit - New Course';
+	}
+    render(){
+        return (
+            <div>
+                <DesktopContainer />
+                <MobileContainer />
+            </div>
+        );
+    }
+}
+
+export default NewPostListLayout;
