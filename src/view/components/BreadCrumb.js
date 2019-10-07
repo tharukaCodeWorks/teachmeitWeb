@@ -2,16 +2,24 @@ import React, { Component } from "react";
 import { Responsive, Breadcrumb, ResponsiveContainer } from "semantic-ui-react";
 
 class DesktopContainer extends Component{
+
+    
+    // breadCrumb (){
+           
+    // };
+
     render(){
+        const rowLen = this.props.breadcrumb.length;
         return (
             <Responsive minWidth={Responsive.onlyComputer.minWidth}>
-                 <h1>Create Course</h1>
+                 <h1>{this.props.header}</h1>
                 <Breadcrumb>
-                    <Breadcrumb.Section link>Home</Breadcrumb.Section>
-                    <Breadcrumb.Divider />
-                    <Breadcrumb.Section link>Courses</Breadcrumb.Section>
-                    <Breadcrumb.Divider />
-                    <Breadcrumb.Section active>New</Breadcrumb.Section>
+                    {this.props.breadcrumb.map(function(element, i) {
+                        return <span>
+                                <Breadcrumb.Section link>{element}</Breadcrumb.Section>
+                                {rowLen===i+1?null:<Breadcrumb.Divider />}
+                            </span>
+                    })}
                 </Breadcrumb>
             </Responsive>
         );
@@ -46,7 +54,7 @@ class BreadCrumb extends Component{
 	render() {
 		return (
 			<div style={{ marginBottom: 20 }}>
-                <DesktopContainer />
+                <DesktopContainer header={ this.props.header } breadcrumb={ this.props.breadcrumb }/>
                 <TabContainer />
 				<MobileContainer />
             </div>	

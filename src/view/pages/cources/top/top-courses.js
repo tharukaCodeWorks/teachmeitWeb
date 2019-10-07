@@ -10,7 +10,7 @@ class DesktopContainer extends Component{
     render(){
         return(
             <Responsive minWidth={Responsive.onlyTablet.minWidth}>
-                <BreadCrumb />
+                <BreadCrumb header="Top Courses" breadcrumb={ [ "Home", "Courses", "Top Courses" ] }/>
                 <Grid columns={5}>
                     <Grid.Row>
                         <Grid.Column style={{ padding: 10 }}>    

@@ -49,7 +49,7 @@ class DesktopContainer extends Component{
         bodyFormData.append('course_name', this.state.course_name);
         bodyFormData.append('course_category_id', this.state.course_category_id);
         bodyFormData.append('course_price', this.state.course_price);
-        bodyFormData.append('course_published', this.state.course_published);
+        bodyFormData.append('course_published', this.state.course_published?1:0);
 
         Axios.post('http://127.0.0.1:8000/api/post-list/insert', bodyFormData, {
             headers:{
@@ -110,7 +110,7 @@ class DesktopContainer extends Component{
             <Responsive minWidth={Responsive.onlyTablet.minWidth}>
                 {/* {BreadcrumbExample()} */}
                 <Container>
-                <BreadCrumb />
+                <BreadCrumb header="New Course" breadcrumb={ [ "Home", "Courses", "New Post" ] }/>
                 <Form loading={ this.state.loading }>
                     {this.state.infoMessage? <Message positive>
                         <Message.Header>Course inserted successfully!</Message.Header>

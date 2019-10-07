@@ -6,7 +6,7 @@ class DesktopContainer extends Component{
     render(){
         return (
             <Responsive minWidth={Responsive.onlyComputer.minWidth}>
-                <BreadCrumb />
+                <BreadCrumb header="Courses" breadcrumb={ [ "Home", "Courses" ] }/>
             </Responsive>
         );
     }
